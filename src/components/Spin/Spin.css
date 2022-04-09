@@ -1,0 +1,11 @@
+.main__big-spin {
+    margin: auto;
+}
+
+.image-spin {
+    width: 180px;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

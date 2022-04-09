@@ -1,0 +1,13 @@
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 938px;
+}
+
+.main__movie-list {
+    margin: 38px auto;
+}
+
+.movie-list__movie-card:nth-child(odd) {
+    margin-right: 36px;
+}
