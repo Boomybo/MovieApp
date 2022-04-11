@@ -29,6 +29,9 @@ export default class MovieItem extends React.Component {
     if (!path) {
       return 'http://s1.iconbird.com/ico/2013/9/430/w256h2561378622483catsleep2.png';
     }
+    if (window.screen.width < 1010) {
+      return `https://image.tmdb.org/t/p/w92${path}`;
+    }
     return `https://image.tmdb.org/t/p/w185${path}`;
   };
 
