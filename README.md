@@ -1,4 +1,4 @@
-# **https://movie-app-boomybo.vercel.app/**
+# **https://movie-app-boomybo.vercel.app**
 
 ## Getting Started with Create React App
 
