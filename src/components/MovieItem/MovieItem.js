@@ -6,7 +6,7 @@ import { Rate } from 'antd';
 import 'antd/dist/antd.css';
 import Genre from '../Genres/Genre';
 import MySpin from '../Spin/Spin';
-import { MovieConsumer } from '../movie-service-context/movie-service-context';
+import { GenresConsumer } from '../../services/movie-service-context/movie-service-context';
 
 import './MovieItem.css';
 
@@ -48,7 +48,7 @@ export default class MovieItem extends React.Component {
   };
 
   render() {
-    const { title, vote_average, release_date, overview, poster_path, id } = this.props;
+    const { title, vote_average, release_date, overview, poster_path, id, genre_ids } = this.props;
 
     let parsed = JSON.parse(localStorage.getItem('ratedMovies'));
 
@@ -91,11 +91,11 @@ export default class MovieItem extends React.Component {
           <h3 className="movie-title info__movie-title">{this.cutTitle(title)}</h3>
           <span className={classNaming}>{vote_average}</span>
           <div className="date info__date">{date}</div>
-          <MovieConsumer>
-            {({ getGenres }) => {
-              return <Genre id={id} getGenres={getGenres} />;
+          <GenresConsumer>
+            {({ genres }) => {
+              return <Genre genre_ids={genre_ids} genres={genres} />;
             }}
-          </MovieConsumer>
+          </GenresConsumer>
           <p className="description info__description">{this.cutText(overview)}</p>
           <Rate count={10} className="rating info__rating" onChange={this.onChange} value={finalRate} />
         </section>

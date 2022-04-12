@@ -7,13 +7,13 @@ export default class SearchInput extends React.Component {
   };
 
   onLabelChange = (e) => {
-    const { getUrl } = this.props;
+    const { changeQuery } = this.props;
     this.setState(
       {
         label: e.target.value,
       },
       () => {
-        getUrl(this.state.label);
+        changeQuery(this.state.label);
       }
     );
   };

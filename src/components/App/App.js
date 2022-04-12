@@ -7,35 +7,38 @@ import SearchInput from '../Search-input/Searchinput';
 import MovieList from '../MovieList/MovieList';
 import HomePage from '../HomePage/HomePage';
 import './App.css';
-import { MovieProvider } from '../movie-service-context/movie-service-context';
-import MovieDB from '../service/movie-service';
+import { MovieProvider, GenresProvider } from '../../services/movie-service-context/movie-service-context';
+import MovieService from '../../services/movie-service';
 
 export default class App extends React.Component {
-  api = new MovieDB();
+  movieService = new MovieService();
 
   state = {
     receivedMovies: [],
     loading: false,
     error: false,
-    total_pages: 0,
+    totalPages: 0,
+    ratedTotalPages: null,
     pageNumber: 1,
-    url: '',
+    query: '',
     homePage: true,
-    session_id: localStorage.getItem('guest_id'),
     ratedPage: false,
     searchPage: true,
     receivedRatedMovies: [],
     movieRating: [],
+    genres: null,
   };
 
   componentDidMount() {
     this.setGuestId();
-    const debounced = debounce(this.getPages, 1000);
+    this.setGenresArray();
+
+    const debounced = debounce(this.getMovies, 100);
     return debounced();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { pageNumber, url, total_pages, searchPage } = this.state;
+    const { pageNumber, query, totalPages, searchPage } = this.state;
 
     if (searchPage !== prevState.searchPage) {
       this.setState({
@@ -44,25 +47,24 @@ export default class App extends React.Component {
       this.getRatedMovies();
     }
 
-    if (url !== prevState.url || pageNumber !== prevState.pageNumber) {
+    if (query !== prevState.query || pageNumber !== prevState.pageNumber) {
       this.setState({
         loading: true,
       });
-      const debounced = debounce(this.getPages, 1000);
+      const debounced = debounce(this.getMovies, 1000);
       return debounced();
     }
-    if (total_pages / 20 < pageNumber && total_pages !== 0) {
+    if (totalPages / 20 < pageNumber && totalPages !== 0) {
       this.setState({
         pageNumber: 1,
       });
     }
   }
 
-  getPages = () => {
-    const { pageNumber, url } = this.state;
-    this.api
-      .getMovies(url, pageNumber)
-      .then((result) => result)
+  getMovies = () => {
+    const { pageNumber, query } = this.state;
+    this.movieService
+      .requestForMovies(query, pageNumber)
       .then(this.onMoviesLoaded)
       .catch((err) => {
         if (err.status === 422) {
@@ -70,7 +72,7 @@ export default class App extends React.Component {
             homePage: true,
             pageNumber: 1,
             loading: false,
-            total_pages: 0,
+            totalPages: 0,
           });
         }
         return this.onError;
@@ -78,7 +80,7 @@ export default class App extends React.Component {
   };
 
   getRatedMovies = () => {
-    this.api
+    this.movieService
       .getRatedMovies(localStorage.getItem('guest_id'))
       .then((result) => result)
       .then(this.onRatedMoviesLoaded)
@@ -86,7 +88,7 @@ export default class App extends React.Component {
   };
 
   setGuestId = () => {
-    this.api
+    this.movieService
       .createGuestSession()
       .then((result) => {
         if (localStorage.getItem('guest_id') === null) {
@@ -96,9 +98,17 @@ export default class App extends React.Component {
       .catch(this.onError);
   };
 
-  getUrl = (movieName) => {
+  setGenresArray = () => {
+    this.movieService.getAllGenres().then((result) =>
+      this.setState({
+        genres: result.genres,
+      })
+    );
+  };
+
+  changeQuery = (movieName) => {
     this.setState({
-      url: movieName,
+      query: movieName,
     });
   };
 
@@ -116,20 +126,20 @@ export default class App extends React.Component {
     });
   };
 
-  onMoviesLoaded = (val) => {
+  onMoviesLoaded = (movies) => {
     this.setState({
-      receivedMovies: val.results,
-      total_pages: val.total_pages * 20,
+      receivedMovies: movies.results,
+      totalPages: movies.total_pages * 20,
       loading: false,
       error: false,
       homePage: false,
     });
   };
 
-  onRatedMoviesLoaded = (val) => {
+  onRatedMoviesLoaded = (movies) => {
     this.setState({
-      receivedRatedMovies: val.results,
-      rated_total_pages: val.total_pages * 20,
+      receivedRatedMovies: movies.results,
+      ratedTotalPages: movies.total_pages * 20,
       loading: false,
       error: false,
     });
@@ -168,19 +178,19 @@ export default class App extends React.Component {
       receivedMovies,
       loading,
       error,
-      total_pages,
+      totalPages,
       homePage,
       searchPage,
       receivedRatedMovies,
-      rated_total_pages,
+      ratedTotalPages,
       movieRating,
     } = this.state;
 
     const movieData = searchPage ? receivedMovies : receivedRatedMovies;
 
-    const totalPages = searchPage ? total_pages : rated_total_pages;
+    const finalTotalPages = searchPage ? totalPages : ratedTotalPages;
 
-    const searchInput = searchPage ? <SearchInput getUrl={this.getUrl} /> : null;
+    const searchInput = searchPage ? <SearchInput changeQuery={this.changeQuery} /> : null;
 
     const movieList = (
       <MovieList
@@ -195,20 +205,22 @@ export default class App extends React.Component {
 
     const displayedPage = homePage ? <HomePage loading={loading} error={error} /> : movieList;
 
-    const onRatedPage = receivedRatedMovies.length === 0 ? <HomePage loading={loading} error={error} /> : movieList;
+    const ratingPage = receivedRatedMovies.length === 0 ? <HomePage loading={loading} error={error} /> : movieList;
 
-    const currentContent = searchPage ? displayedPage : onRatedPage;
+    const currentContent = searchPage ? displayedPage : ratingPage;
 
     return (
-      <MovieProvider value={this.api}>
+      <MovieProvider value={this.movieService}>
         <section className="content container__content">
           <header className="header content__header">
             <SearchRated onRated={this.onRated} onSearch={this.onSearch} onRatedMovies={this.getRatedMovies} />
             {searchInput}
           </header>
-          <main className="main content__main">{currentContent}</main>
+          <GenresProvider value={this.state}>
+            <main className="main content__main">{currentContent}</main>
+          </GenresProvider>
           <footer className="footer content__footer">
-            <Pagination defaultCurrent={1} total={totalPages} defaultPageSize={20} onChange={this.onChange} />
+            <Pagination defaultCurrent={1} total={finalTotalPages} defaultPageSize={20} onChange={this.onChange} />
           </footer>
         </section>
       </MovieProvider>

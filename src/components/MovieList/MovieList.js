@@ -4,7 +4,7 @@ import { Alert } from 'antd';
 import MovieItem from '../MovieItem/MovieItem';
 import MyError from '../ErrorComponent/MyError';
 import MySpin from '../Spin/Spin';
-import { MovieConsumer } from '../movie-service-context/movie-service-context';
+import { MovieConsumer } from '../../services/movie-service-context/movie-service-context';
 import './MovieList.css';
 
 export default class MovieList extends React.Component {

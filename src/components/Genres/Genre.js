@@ -4,27 +4,27 @@ import './Genre.css';
 export default class Genre extends React.Component {
   state = {
     genres: [],
-    isMounted: false,
   };
 
   componentDidMount() {
-    this.setState({
-      isMounted: true,
-    });
-    this.getGenres();
+    this.setNameOfGenre();
   }
 
-  getGenres = () => {
-    const { getGenres, id } = this.props;
+  setNameOfGenre = () => {
+    const { genre_ids, genres } = this.props;
 
-    getGenres(id)
-      .then((val) => val)
-      .then(this.onGenreLoaded);
-  };
+    const newArr = [];
 
-  onGenreLoaded = (val) => {
-    this.setState({
-      genres: val.genres,
+    genre_ids.forEach((genre) =>
+      genres.forEach((item) => {
+        if (item.id === genre) {
+          return newArr.push(item);
+        }
+      })
+    );
+
+    return this.setState({
+      genres: newArr,
     });
   };
 

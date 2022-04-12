@@ -12,6 +12,11 @@ li {
     list-style-type: none;
    }
 
+button:hover {
+    cursor: pointer;
+}
+
+
 
 
 
