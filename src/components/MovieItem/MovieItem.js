@@ -7,34 +7,11 @@ import 'antd/dist/antd.css';
 import Genre from '../Genres/Genre';
 import MySpin from '../Spin/Spin';
 import { GenresConsumer } from '../../services/movie-service-context/movie-service-context';
+import { cutText, cutTitle, getImg } from '../../helpres';
 
 import './MovieItem.css';
 
 export default class MovieItem extends React.Component {
-  cutText = (text) => {
-    if (text.split('').length > 70) {
-      return text.split('').slice(0, 70).join('') + '...';
-    }
-    return text;
-  };
-
-  cutTitle = (text) => {
-    if (text.length > 30) {
-      return text.split('').slice(0, 30).join('') + '...';
-    }
-    return text;
-  };
-
-  getImg = (path) => {
-    if (!path) {
-      return 'http://s1.iconbird.com/ico/2013/9/430/w256h2561378622483catsleep2.png';
-    }
-    if (window.screen.width < 1010) {
-      return `https://image.tmdb.org/t/p/w92${path}`;
-    }
-    return `https://image.tmdb.org/t/p/w185${path}`;
-  };
-
   preloader = () => {
     return <MySpin className="image-spin" />;
   };
@@ -82,13 +59,13 @@ export default class MovieItem extends React.Component {
       <li className="movie-card movie-list__movie-card">
         <div className="poster movie-card__poster">
           <ImageLoader
-            src={this.getImg(poster_path)}
+            src={getImg(poster_path)}
             className="movie-poster poster__movie-poster"
             preloader={this.preloader}
           />
         </div>
         <section className="info movie-card__info">
-          <h3 className="movie-title info__movie-title">{this.cutTitle(title)}</h3>
+          <h3 className="movie-title info__movie-title">{cutTitle(title)}</h3>
           <span className={classNaming}>{vote_average}</span>
           <div className="date info__date">{date}</div>
           <GenresConsumer>
@@ -96,7 +73,7 @@ export default class MovieItem extends React.Component {
               return <Genre genre_ids={genre_ids} genres={genres} />;
             }}
           </GenresConsumer>
-          <p className="description info__description">{this.cutText(overview)}</p>
+          <p className="description info__description">{cutText(overview)}</p>
           <Rate count={10} className="rating info__rating" onChange={this.onChange} value={finalRate} />
         </section>
       </li>
