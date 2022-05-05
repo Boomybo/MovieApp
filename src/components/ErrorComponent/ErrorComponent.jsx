@@ -2,9 +2,9 @@ import React from 'react';
 import { Alert } from 'antd';
 
 import icon from './image-204707.svg';
-import './MyError.css';
+import './ErrorComponent.scss';
 
-const MyError = () => {
+const ErrorComponent = () => {
   return (
     <div className="err main__err">
       <img src={icon} className="sad-cat err__sad-cat"></img>
@@ -13,4 +13,4 @@ const MyError = () => {
   );
 };
 
-export default MyError;
+export default ErrorComponent;

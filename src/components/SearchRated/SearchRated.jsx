@@ -1,5 +1,6 @@
 import React from 'react';
-import './SearchRated.css';
+
+import './SearchRated.scss';
 
 export default class SearchRated extends React.Component {
   onRatedBtn = () => {

@@ -45,7 +45,8 @@
           "sibling",
           "index"
         ],
-        "newlines-between": "always"
+        "newlines-between": "always",
+        "warnOnUnassignedImports": true
       }
     ]
   },

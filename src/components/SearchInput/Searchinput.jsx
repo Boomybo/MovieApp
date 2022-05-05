@@ -1,5 +1,6 @@
 import React from 'react';
-import './SearchInput.css';
+
+import './SearchInput.scss';
 
 export default class SearchInput extends React.Component {
   state = {

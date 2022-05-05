@@ -2,10 +2,11 @@ import React from 'react';
 import { Alert } from 'antd';
 
 import MovieItem from '../MovieItem/MovieItem';
-import MyError from '../ErrorComponent/MyError';
-import MySpin from '../Spin/Spin';
+import ErrorComponent from '../ErrorComponent/ErrorComponent';
+import Loader from '../Loader/Loader';
 import { MovieConsumer } from '../../services/movie-service-context/movie-service-context';
-import './MovieList.css';
+
+import './MovieList.scss';
 
 export default class MovieList extends React.Component {
   elems() {
@@ -52,8 +53,8 @@ export default class MovieList extends React.Component {
 
     const classNaming = 'big-spin main__big-spin';
 
-    const errMessage = error ? <MyError /> : null;
-    const load = loading ? <MySpin className={classNaming} /> : null;
+    const errMessage = error ? <ErrorComponent /> : null;
+    const load = loading ? <Loader className={classNaming} /> : null;
     const content = hasData ? this.elems() : null;
 
     return (

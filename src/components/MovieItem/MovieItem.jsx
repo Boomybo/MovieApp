@@ -3,16 +3,16 @@ import { format } from 'date-fns';
 import ImageLoader from 'react-imageloader';
 import { Rate } from 'antd';
 
-import Genre from '../Genres/Genre';
-import MySpin from '../Spin/Spin';
+import Genre from '../Genre/Genre';
+import Loader from '../Loader/Loader';
 import { GenresConsumer } from '../../services/movie-service-context/movie-service-context';
 import { cutText, cutTitle, getImg } from '../../utils/helpres';
 
-import './MovieItem.css';
+import './MovieItem.scss';
 
 export default class MovieItem extends React.Component {
   preloader = () => {
-    return <MySpin className="image-spin" />;
+    return <Loader className="image-spin" />;
   };
 
   onChange = (rate) => {

@@ -1,5 +1,6 @@
 import React from 'react';
-import './Genre.css';
+
+import './Genre.scss';
 
 export default class Genre extends React.Component {
   state = {

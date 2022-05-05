@@ -1,18 +1,23 @@
 import React from 'react';
 import { Pagination } from 'antd';
 import debounce from 'lodash.debounce';
-
 import 'antd/dist/antd.css';
+
 import SearchRated from '../SearchRated/SearchRated';
 import SearchInput from '../SearchInput/Searchinput';
 import MovieList from '../MovieList/MovieList';
-import HomePage from '../HomePage/HomePage';
-import './App.css';
 import { MovieProvider, GenresProvider } from '../../services/movie-service-context/movie-service-context';
 import MovieService from '../../services/movie-service';
+import Loader from '../Loader/Loader';
+import ErrorComponent from '../ErrorComponent/ErrorComponent';
+
+import icon from './Bongo-Cat-png-3.png';
+import './App.scss';
 
 export default class App extends React.Component {
   movieService = new MovieService();
+
+  someval = 5;
 
   state = {
     receivedMovies: [],
@@ -241,3 +246,30 @@ export default class App extends React.Component {
     );
   }
 }
+
+const HomePage = ({ loading, error }) => {
+  const hasData = !(error || loading);
+
+  const classNaming = 'big-spin';
+
+  const errMessage = error ? <ErrorComponent /> : null;
+  const load = loading ? <Loader className={classNaming} /> : null;
+
+  const startingPage = (
+    <>
+      <img src={icon} className="home-page__img"></img>
+      <p className="home-page__text">Welcome to MovieApp!</p>
+      <p className="home-page__text">Start using by entering the name of the movie</p>
+    </>
+  );
+
+  const content = hasData ? startingPage : null;
+
+  return (
+    <div className="home-page main__home-page">
+      {errMessage}
+      {load}
+      {content}
+    </div>
+  );
+};
