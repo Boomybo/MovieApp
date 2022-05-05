@@ -3,13 +3,13 @@ import { Pagination } from 'antd';
 import debounce from 'lodash.debounce';
 import 'antd/dist/antd.css';
 
-import SearchRated from '../SearchRated/SearchRated';
-import SearchInput from '../SearchInput/Searchinput';
-import MovieList from '../MovieList/MovieList';
+import SearchRated from '../SearchRated';
+import SearchInput from '../SearchInput';
+import MovieList from '../MovieList';
 import { MovieProvider, GenresProvider } from '../../services/movie-service-context/movie-service-context';
 import MovieService from '../../services/movie-service';
-import Loader from '../Loader/Loader';
-import ErrorComponent from '../ErrorComponent/ErrorComponent';
+import Loader from '../Loader';
+import ErrorComponent from '../ErrorComponent';
 
 import icon from './Bongo-Cat-png-3.png';
 import './App.scss';

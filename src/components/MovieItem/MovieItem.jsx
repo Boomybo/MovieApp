@@ -3,8 +3,8 @@ import { format } from 'date-fns';
 import ImageLoader from 'react-imageloader';
 import { Rate } from 'antd';
 
-import Genre from '../Genre/Genre';
-import Loader from '../Loader/Loader';
+import Genre from '../Genre';
+import Loader from '../Loader';
 import { GenresConsumer } from '../../services/movie-service-context/movie-service-context';
 import { cutText, cutTitle, getImg } from '../../utils/helpres';
 

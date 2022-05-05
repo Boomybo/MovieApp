@@ -1,9 +1,9 @@
 import React from 'react';
 import { Alert } from 'antd';
 
-import MovieItem from '../MovieItem/MovieItem';
-import ErrorComponent from '../ErrorComponent/ErrorComponent';
-import Loader from '../Loader/Loader';
+import MovieItem from '../MovieItem';
+import ErrorComponent from '../ErrorComponent';
+import Loader from '../Loader';
 import { MovieConsumer } from '../../services/movie-service-context/movie-service-context';
 
 import './MovieList.scss';
