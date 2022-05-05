@@ -26,7 +26,8 @@ export default class SearchInput extends React.Component {
           placeholder="Type to search..."
           className="movie-input input-form__movie-input"
           onChange={this.onLabelChange}
-          value={this.state.label}
+          onBlur={this.onBlur}
+          value={this.props.query}
         ></input>
       </form>
     );

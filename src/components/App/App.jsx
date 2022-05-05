@@ -2,8 +2,9 @@ import React from 'react';
 import { Pagination } from 'antd';
 import debounce from 'lodash.debounce';
 
-import SearchRated from '../Search-Rated/SearchRated';
-import SearchInput from '../Search-input/Searchinput';
+import 'antd/dist/antd.css';
+import SearchRated from '../SearchRated/SearchRated';
+import SearchInput from '../SearchInput/Searchinput';
 import MovieList from '../MovieList/MovieList';
 import HomePage from '../HomePage/HomePage';
 import './App.css';
@@ -27,7 +28,14 @@ export default class App extends React.Component {
     receivedRatedMovies: [],
     movieRating: [],
     genres: null,
+    globalLabel: '',
   };
+
+  onGlobalLabel(someVal) {
+    this.setState({
+      globalLabel: someVal,
+    });
+  }
 
   componentDidMount() {
     this.setGuestId();
@@ -184,13 +192,14 @@ export default class App extends React.Component {
       receivedRatedMovies,
       ratedTotalPages,
       movieRating,
+      query,
     } = this.state;
 
     const movieData = searchPage ? receivedMovies : receivedRatedMovies;
 
     const finalTotalPages = searchPage ? totalPages : ratedTotalPages;
 
-    const searchInput = searchPage ? <SearchInput changeQuery={this.changeQuery} /> : null;
+    const searchInput = searchPage ? <SearchInput changeQuery={this.changeQuery} query={query} /> : null;
 
     const movieList = (
       <MovieList
@@ -213,7 +222,12 @@ export default class App extends React.Component {
       <MovieProvider value={this.movieService}>
         <section className="content container__content">
           <header className="header content__header">
-            <SearchRated onRated={this.onRated} onSearch={this.onSearch} onRatedMovies={this.getRatedMovies} />
+            <SearchRated
+              onRated={this.onRated}
+              onSearch={this.onSearch}
+              onRatedMovies={this.getRatedMovies}
+              searchPage={searchPage}
+            />
             {searchInput}
           </header>
           <GenresProvider value={this.state}>

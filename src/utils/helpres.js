@@ -1,6 +1,6 @@
 const cutText = (text) => {
-  if (text.split('').length > 70) {
-    return text.split('').slice(0, 70).join('') + '...';
+  if (text.split('').length > 140) {
+    return text.split('').slice(0, 140).join('') + '...';
   }
   return text;
 };

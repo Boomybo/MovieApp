@@ -1,4 +1,4 @@
-import UserErrors from './UserErrors/UserError';
+import UserErrors from './userErrors/userError';
 
 export default class MovieService {
   _apiBase = 'https://api.themoviedb.org/3/';

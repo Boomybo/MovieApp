@@ -3,11 +3,10 @@ import { format } from 'date-fns';
 import ImageLoader from 'react-imageloader';
 import { Rate } from 'antd';
 
-import 'antd/dist/antd.css';
 import Genre from '../Genres/Genre';
 import MySpin from '../Spin/Spin';
 import { GenresConsumer } from '../../services/movie-service-context/movie-service-context';
-import { cutText, cutTitle, getImg } from '../../helpres';
+import { cutText, cutTitle, getImg } from '../../utils/helpres';
 
 import './MovieItem.css';
 
